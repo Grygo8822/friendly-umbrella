@@ -4,10 +4,11 @@ from cProfile import label
 from cmath import sqrt
 from dis import dis
 from random import random
+from mpl_toolkits.mplot3d import Axes3D
 import this
 import tkinter
 import csv
-from turtle import distance
+from turtle import distance, shape
 from typing import Iterator
 from PIL import ImageTk, Image
 import numpy as np
@@ -24,6 +25,7 @@ filename = os.path.join(here, 'data.txt')
 
 petal_points =[]
 k = 2
+dimensions = 4
         
 
 def generate_data_points(filename,delimiter ="\t"):
@@ -79,6 +81,28 @@ def calculate_new_centroids(centroids, point_groupings):
                 averages = [0,0,0,0]
             c = averages
 
+def get_serial_dimension(points):
+    for point in points:
+        output = [[],[],[],[]]
+        for index, value in enumerate(point):
+            output[index].append(value)
+    return output
+
+#table containing lists for x point value, y point value etc...
+#[[x-values],[y-values],[z-values]...]
+def get_values_per_corrdinate(c_points):
+    values_per_coordinate = []
+    for x in range(k):
+        values_per_coordinate.append([])
+        for y in range(dimensions):
+            values_per_coordinate[x].append([])
+    for x in range(k):
+        for point in c_points[x]:
+            for index,dimension_value in enumerate(point):
+                values_per_coordinate[x][index].append(dimension_value)
+    return values_per_coordinate
+
+
 #sepal_points = generate_data_points("sepal_data.txt")
 
 petal_points = generate_data_points(filename)
@@ -89,15 +113,24 @@ clustered_points = cluster_points(petal_points, centroids)
 
 calculate_new_centroids(centroids, clustered_points)
 
-for item in clustered_points.items():
-    plt.plot(item)
+values_per_coordinate = get_values_per_corrdinate(clustered_points)
 
+fig = plt.figure()
+ax = fig.add_subplot(111, projection="3d")
+
+img = ax.scatter(values_per_coordinate[0][0], values_per_coordinate[0][1], values_per_coordinate[0][2], c=values_per_coordinate[0][3], cmap = plt.cool(), marker="v", depthshade = False)
+
+img2 = ax.scatter(values_per_coordinate[1][0], values_per_coordinate[1][1], values_per_coordinate[1][2], c=values_per_coordinate[1][3], cmap = plt.hot(),  marker="o",depthshade = False)
+
+
+#fig.colorbar(img)
+#fig.colorbar(img2)
 plt.show()
-clustered_points = cluster_points(petal_points, centroids)
+
+
+
 
 print()
-
-
 
 
 
