@@ -105,27 +105,27 @@ def get_values_per_corrdinate(c_points):
 
 #sepal_points = generate_data_points("sepal_data.txt")
 
-petal_points = generate_data_points(filename)
+# petal_points = generate_data_points(filename)
 
-centroids = select_random_points(petal_points, k)
+# centroids = select_random_points(petal_points, k)
 
-clustered_points = cluster_points(petal_points, centroids)
+# clustered_points = cluster_points(petal_points, centroids)
 
-calculate_new_centroids(centroids, clustered_points)
+# calculate_new_centroids(centroids, clustered_points)
 
-values_per_coordinate = get_values_per_corrdinate(clustered_points)
+# values_per_coordinate = get_values_per_corrdinate(clustered_points)
 
-fig = plt.figure()
-ax = fig.add_subplot(111, projection="3d")
+# fig = plt.figure()
+# ax = fig.add_subplot(111, projection="3d")
 
-img = ax.scatter(values_per_coordinate[0][0], values_per_coordinate[0][1], values_per_coordinate[0][2], c=values_per_coordinate[0][3], cmap = plt.cool(), marker="v", depthshade = False)
+# img = ax.scatter(values_per_coordinate[0][0], values_per_coordinate[0][1], values_per_coordinate[0][2], c=values_per_coordinate[0][3], cmap = plt.cool(), marker="v", depthshade = False)
 
-img2 = ax.scatter(values_per_coordinate[1][0], values_per_coordinate[1][1], values_per_coordinate[1][2], c=values_per_coordinate[1][3], cmap = plt.hot(),  marker="o",depthshade = False)
+# img2 = ax.scatter(values_per_coordinate[1][0], values_per_coordinate[1][1], values_per_coordinate[1][2], c=values_per_coordinate[1][3], cmap = plt.hot(),  marker="o",depthshade = False)
 
 
-#fig.colorbar(img)
-#fig.colorbar(img2)
-plt.show()
+# #fig.colorbar(img)
+# #fig.colorbar(img2)
+# plt.show()
 
 
 
