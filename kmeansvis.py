@@ -90,17 +90,32 @@ def get_serial_dimension(points):
 
 #table containing lists for x point value, y point value etc...
 #[[x-values],[y-values],[z-values]...]
-def get_values_per_corrdinate(c_points):
+def get_values_per_corrdinate(c_points,k,dimensions):
     values_per_coordinate = []
-    for x in range(k):
-        values_per_coordinate.append([])
-        for y in range(dimensions):
-            values_per_coordinate[x].append([])
-    for x in range(k):
-        for point in c_points[x]:
-            for index,dimension_value in enumerate(point):
-                values_per_coordinate[x][index].append(dimension_value)
+    if k!=1:
+        for x in range(k):
+            values_per_coordinate.append([])
+            for y in range(dimensions):
+                values_per_coordinate[x].append([])
+            for x in range(k):
+                for point in c_points[x]:
+                    for index,dimension_value in enumerate(point):
+                        values_per_coordinate[x][index].append(dimension_value)
+    else:
+        for x in range(dimensions):
+            values_per_coordinate.append([])
+        for point in c_points:
+            for index, dimension_value in enumerate(point):
+                values_per_coordinate[index].append(dimension_value)
+    
     return values_per_coordinate
+    
+def combine_clusters_per_coordinate(points, centroids, k, dimensions):
+    for index,value in enumerate(centroids):
+        for dim_value in value:
+            points[index]
+
+        
 
 
 #sepal_points = generate_data_points("sepal_data.txt")

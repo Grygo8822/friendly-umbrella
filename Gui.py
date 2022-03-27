@@ -36,6 +36,7 @@ def select_data():
     read_data(filename=filename)
     
 def read_data(filename):
+    global dimensions
     if filename is not None:
         global points
         points = kmeansvis.generate_data_points(filename=filename)
@@ -63,15 +64,26 @@ def pick_random_centroids():
 def initialize_graph():
     global points, dimensions,canvas
     fig = plt.figure()
-    ax = fig.add_subplot(111, projection="3d")
-    img = ax.scatter([0,1,2,3],[0,1,2,3],[0,1,2,3],c=[0,1,2,3], cmap = plt.cool())
-    fig.colorbar(img)
+    values_per_coordinate = kmeansvis.get_values_per_corrdinate(points,1,dimensions)
+    centroids_per_coordinate = kmeansvis.get_values_per_corrdinate(centroids,1,dimensions )
+    match dimensions:
+        case 2:
+            ax = fig.add_subplot(111, projection="2d")
+            ax.scatter(values_per_coordinate[0], values_per_coordinate[1], marker="o", depthshade = False)
+        case 3:
+            ax = fig.add_subplot(111, projection="3d")
+            ax.scatter(values_per_coordinate[0], values_per_coordinate[1], values_per_coordinate[2], marker="o", depthshade = False)
+        case 4:
+            ax = fig.add_subplot(111, projection="3d")
+            img = ax.scatter(values_per_coordinate[0], values_per_coordinate[1], values_per_coordinate[2], c=values_per_coordinate[3], cmap = plt.cool(), marker="v", depthshade = False)
+            ax.scatter(centroids_per_coordinate[0],centroids_per_coordinate[1],centroids_per_coordinate[2],c=centroids_per_coordinate[3],cmap = plt.cool(), marker="o", depthshade= False)
+            fig.colorbar(img)
     canvas1 = FigureCanvasTkAgg(fig, master=canvas)
     canvas1.draw()
     canvas1.get_tk_widget().pack()
 
 #Pick the data in this frame...
-data_picker = LabelFrame(root, text="Wybierz dane:")
+data_picker = LabelFrame(root, text="Ustawienia algorytmu")
 data_picker.grid(row=0, column=0,padx=15, pady=10,sticky=W)
 
 #Initialize the data picker frame elements
@@ -90,13 +102,14 @@ file_info_label.grid(row=1, column=0)
 
 #Choose the alogorythm propreties (k)
 #Pick random centroids
-algo_settings_frame = LabelFrame(root, text="Skonfiguruj algorytm")
-algo_settings_frame.grid(row=1, column=0, padx=15, pady=10, sticky=W)
+algo_settings_frame = LabelFrame(data_picker, text="Skonfiguruj algorytm")
+algo_settings_frame.grid(row=2, column=0, padx=15, pady=10, sticky=W)
 
 #initialize elements
 k_value_label = Label(algo_settings_frame, text="Wybierz K (od 2 do 8)")
 k_input = Entry(algo_settings_frame, text="k")
 pick_centroids_button = Button(algo_settings_frame, text="Losuj centroidy",state=tkinter.DISABLED, command=pick_random_centroids)
+
 
 #Arrange elements
 k_value_label.grid(row=0, column=0, sticky=W)
@@ -107,7 +120,7 @@ pick_centroids_button.grid(row=1, column=0,sticky=W)
 #Plot secion
 
 canvas = Canvas(root, width=800, height=600)
-canvas.pack(side="right")
+canvas.grid(row=0, column=1)
 
 
 
